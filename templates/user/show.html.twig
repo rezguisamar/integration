@@ -1,0 +1,50 @@
+{% extends 'home.html.twig' %}
+
+{% block title %}User{% endblock %}
+
+{% block body %}
+<div class="container-xxl py-5">
+    <div class="container">
+        <div class="row g-5 align-items-end">
+            <div class="col-lg-3 col-md-5 wow fadeInUp" data-wow-delay="0.1s">
+            </div>
+            <div class="col-lg-6 col-md-7 wow fadeInUp" data-wow-delay="0.3s">
+                <h2 class="display-5 text-primary mb-0">
+                    {{ user.firstname | capitalize }}
+                </h2>
+                <p class="text-primary mb-4">CLIENT
+                    {% if user.isActive %}
+                        online
+                    {% else %}
+                        offline
+                    {% endif %}</p>
+                <table class="table">
+        <tbody>
+            <tr>
+                <th>Email</th>
+                <td>{{ user.email }}</td>
+            </tr>
+            <tr>
+                <th>Firstname</th>
+                <td>{{ user.firstname }}</td>
+            </tr>
+            <tr>
+                <th>Lastname</th>
+                <td>{{ user.lastname }}</td>
+            </tr>
+            <tr>
+                <th>Phone</th>
+                <td>{{ user.phone }}</td>
+            </tr>
+        </tbody>
+    </table>
+    <a class="btn" href="{{ path('app_user_edit', {'id': user.id}) }}">Edit</a>
+                {% if is_granted('ROLE_ADMIN') %}
+                    <a href="{{ path('app_back') }}" class="btn btn-primary">Go to Back Office</a>
+                {% endif %}
+               <a> {{ include('user/_delete_form.html.twig') }}</a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

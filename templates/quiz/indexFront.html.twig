@@ -1,0 +1,74 @@
+{% extends 'home.html.twig' %}
+
+{% block title %}Quiz index{% endblock %}
+
+
+
+{% block body %}
+    <h1>Quizes</h1>
+<style>
+.quiz-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+}
+
+.quiz-card {
+    background-color: #f9f9f9;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    padding: 20px;
+    margin-bottom: 20px;
+    width: 45%; /* Adjust as needed */
+}
+
+.quiz-card h2 {
+    font-size: 1.5em;
+    margin-bottom: 10px;
+}
+
+.quiz-card p {
+    margin: 5px 0;
+}
+
+.actions {
+    margin-top: 15px;
+}
+
+.actions a {
+    display: inline-block;
+    margin-right: 10px;
+    text-decoration: none;
+    padding: 8px 16px;
+    border-radius: 5px;
+}
+
+.btn-primary {
+    background-color: #007bff;
+    color: #fff;
+}
+
+.btn-secondary {
+    background-color: #6c757d;
+    color: #fff;
+}
+
+</style>
+    <div class="quiz-container">
+        {% for quiz in quizzes %}
+            <div class="quiz-card">
+                <h2>{{ quiz.titre }}</h2>
+                <p><strong>Created At:</strong> {{ quiz.createdAt ? quiz.createdAt|date('Y-m-d H:i:s') : '' }}</p>
+                <p><strong>Durée:</strong> {{ quiz.duree }}</p>
+                <p><strong>N° Questions:</strong> {{ quiz.nbrq }}</p>
+                <p><strong>Note:</strong> {{ quiz.note }}</p>
+                <div class="actions">
+                    <a href="{{ path('app_quiz_display', {'id': quiz.id}) }}" class="btn btn-primary">Take Quiz</a>
+                </div>
+            </div>
+        {% else %}
+            <p>No records found</p>
+        {% endfor %}
+    </div>
+
+{% endblock %}

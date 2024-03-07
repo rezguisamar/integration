@@ -1,0 +1,31 @@
+{% extends 'baseBack.html.twig' %}
+
+{% block title %}New Course{% endblock %}
+
+{% block body %}
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <div class="card">
+                    <div class="card-header">Create new Course</div>
+
+                    <div class="card-body">
+                        {{ include('cour/_form.html.twig') }}
+
+                        <a href="{{ path('app_cour_index_back') }}" class="btn btn-secondary mt-3">Back to list</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <style>
+        .container {
+            padding-top: 50px;
+        }
+
+        .card {
+            margin-top: 20px;
+        }
+    </style>
+{% endblock %}

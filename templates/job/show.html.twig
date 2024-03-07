@@ -1,0 +1,21 @@
+{% extends 'home.html.twig' %}
+
+{% block title %}Job{% endblock %}
+
+{% block body %}
+
+<div class="container-xxl py-5">
+    <div class="container">
+        <div class="row g-5 align-items-end">
+            <div class="col-lg-6 col-md-7 wow fadeInUp" data-wow-delay="0.3s">
+                <h1 class="display-1 text-primary mb-0">{{ job.title }}</h1>
+                <p class="text-primary mb-4">{{ job.organisation }}</p>
+                <h1 class="display-5 mb-4">{{ job.startdate ? job.startdate|date('Y-m-d') : '' }}</h1>
+                <p class="mb-4">{{ job.description }}</p>
+                <a class="btn btn-primary py-3 px-4" href="{{ path('app_application_new') }}">Apply !</a>
+                <a class="btn btn-primary py-3 px-4" href="{{ path('app_job_index') }}">Back</a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,87 @@
+{% extends 'baseFront.html.twig' %}
+
+{% block title %}New Donation
+{% endblock %}
+
+{% block body %}
+	<style>
+		.example-wrapper {
+			margin: 1em auto;
+			max-width: 800px;
+			width: 95%;
+			font: 18px / 1.5 sans-serif;
+		}
+
+		.example-wrapper code {
+			background: #F5F5F5;
+			padding: 2px 6px;
+		}
+
+		/* Add spacing between labels and input fields */
+		.form-group {
+			margin-bottom: 15px;
+		}
+	</style>
+
+	<div class="container-fluid quote my-5 py-5" data-parallax="scroll" data-image-src="assets/img/carousel-2.jpg">
+		<div class="container py-5">
+			<div class="row justify-content-center">
+				<div class="col-lg-7">
+					<div class="bg-white rounded p-4 p-sm-5 wow fadeIn" data-wow-delay="0.5s">
+						<h2 class="display-5 text-center mb-5">Donate</h2>
+						{{ form_start(form, {'attr': {'id': 'donation-form'}}) }}
+						<div class="form-group">
+							{{ form_widget(form.firstName, {'attr': {'class': 'form-control bg-light border-0', 'placeholder': 'First Name'}}) }}
+						</div>
+						<div class="form-group">
+							{{ form_widget(form.lastName, {'attr': {'class': 'form-control bg-light border-0', 'placeholder': 'Last Name'}}) }}
+						</div>
+						<div class="form-group">
+							{{ form_widget(form.address, {'attr': {'class': 'form-control bg-light border-0', 'placeholder': 'Address'}}) }}
+						</div>
+						<div class="form-group" id="phone">
+							{{ form_widget(form.phoneNumber, {'attr': {'class ': 'form-control bg-light border-0', 'placeholder': 'Phone Number'}}) }}
+							{{ form_errors(form.phoneNumber) }}
+						</div>
+						<div class="form-group">
+							{{ form_widget(form.amount, {'attr': {'class': 'form-control bg-light border-0', 'placeholder': 'Amount'}}) }}
+							{{ form_errors(form.amount) }}
+						</div>
+						<div class="text-center">
+							{{ form_widget(form.save, {'label': 'Donate', 'attr': {'class': 'btn btn-primary py-3 px-4', 'id': 'save-button','href': path('app_charity_front_index')}}) }}
+							<a href="{{ path('app_charity_front_index') }}" class="btn btn-secondary">Back to List</a>
+						</div>
+						{{ form_end(form) }}
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<script>
+		function saveDataToDatabase(event) {
+event.preventDefault();
+
+// Retrieve the form element and its data
+const form = document.getElementById('donation-form');
+const formData = new FormData(form);
+
+// Send a request to the server-side script to save the data
+fetch('{{ path('app_donation_new') }}', {
+method: 'POST',
+body: formData
+}).then(response => response.json()).then(data => {
+// Handle the response from the server
+// For example, display a success message or perform any necessary actions
+console.log(data);
+}).catch(error => {
+// Handle any errors that occurred during the request
+// For example, display an error message or perform any necessary actions
+console.error(error);
+});
+}
+
+const saveButton = document.getElementById('save-button');
+saveButton.addEventListener('click', saveDataToDatabase);
+	</script>
+{% endblock %}

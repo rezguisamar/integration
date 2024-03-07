@@ -1,0 +1,62 @@
+{% extends 'baseFront.html.twig' %}
+
+{% block title %}Log in!{% endblock %}
+
+{% block body %}
+<form method="post">
+    {% if error %}
+        <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+    {% endif %}
+
+    {% if app.user %}
+        <div class="mb-3">
+            You are logged in as {{ app.user.userIdentifier }}, <a href="{{ path('app_logout') }}">Logout</a>
+        </div>
+    {% endif %}
+
+    <div class="container-fluid quote my-5 py-5" data-parallax="scroll" data-image-src="assets/img/carousel-2.jpg">
+        <div class="container py-5">
+            <div class="row justify-content-center">
+                <div class="col-lg-7">
+                    <div class="bg-white rounded p-4 p-sm-5 wow fadeIn" data-wow-delay="0.5s">
+                        <h2 class="display-5 text-center mb-5">Greenta - Login</h2>
+                        <div class="row g-3">
+                            <form class="row g-3 needs-validation" novalidate>
+                                <div class="col-sm-12">
+                                    <label for="inputEmail">Email</label>
+                                    <input type="email" value="{{ last_username }}" name="email" id="inputEmail" class="form-control bg-light border-0" autocomplete="email" required autofocus>
+                                </div>
+                                <div class="col-sm-12">
+                                    <label for="inputPassword">Password</label>
+                                    <input type="password" name="password" id="inputPassword" class="form-control bg-light border-0" autocomplete="current-password" required>
+                                </div>
+                                <div class="col-sm-12">
+                                    <div class="form-check">
+                                        <input type="checkbox" class="form-check-input" id="remember_me"
+                                               name="_remember_me">
+                                        <label class="form-check-label" for="remember_me">Remember Me!</label>
+                                    </div>
+                                </div>
+                            </form>
+                                <input type="hidden" name="_csrf_token"
+                                               value="{{ csrf_token('authenticate') }}"
+                                >
+                                <button class="btn btn-primary py-3 px-4" type="submit">
+                                    Login
+                                </button>
+                            <div class="col-12 text-lg-end">
+                                <p class="btn">Don't have account? <a href="{{ path('app_user_new') }}">Create an account</a></p>
+                                <div class="col-12 text-lg-end">
+                                    <button class="btn" type="button">
+                                        <a href="{{ path('app_forgot_password_request') }}">Forgot your password?</a>
+                                    </button>
+                                </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+  </div>
+</form>
+{% endblock %}

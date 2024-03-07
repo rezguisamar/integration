@@ -1,0 +1,40 @@
+{{ form_start(form, {'attr': {'id': 'quizform' ,'class': 'form-container' , 'novalidate': 'novalidate'}}) }}
+    <div class="form-group">
+        {{ form_label(form.titre) }}
+        {{ form_widget(form.titre, {'attr': {'class': 'form-control'}}) }}
+        <span style="color:red;">{{ form_errors(form.titre)}}</span>
+    </div>
+
+    <div class="form-group">
+        {{ form_label(form.duree) }}
+        {{ form_widget(form.duree, {'attr': {'class': 'form-control'}}) }}
+    </div>
+
+    <div class="form-group">
+        {{ form_label(form.note) }}
+        {{ form_widget(form.note, {'attr': {'class': 'form-control'}}) }}
+    </div>
+
+    <div class="form-group">
+        {{ form_label(form.nbrq) }}
+        {{ form_widget(form.nbrq, {'attr': {'class': 'form-control'}}) }}
+    </div>
+    
+
+    <button type="submit" class="btn btn-primary">{{ button_label|default('Save') }}</button>
+{{ form_end(form) }}
+
+<style>
+    .form-container {
+        max-width: 500px;
+        margin: auto;
+        padding: 20px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        background-color: #f9f9f9;
+    }
+
+    .form-group {
+        margin-bottom: 20px;
+    }
+</style>

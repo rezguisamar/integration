@@ -1,0 +1,92 @@
+{% extends 'baseBack.html.twig' %}
+
+{% block title %}Question index{% endblock %}
+
+{% block body %}
+<center>
+    <h1 style="margin-top: 150px;">Questions</h1>
+    </center>
+<style>
+        /* Custom styles */
+        .table {
+            width: 70%;
+            border-collapse: collapse;
+             margin-top: 30px;
+            margin-bottom: 20px;
+            margin-left:350px;
+        }
+        .table th, .table td {
+            padding: 8px;
+            border: 1px solid #ddd;
+            text-align: left;
+        }
+        .table th {
+            background-color: #f2f2f2;
+        }
+        .table tbody tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+        .table tbody tr:hover {
+            background-color: #ddd;
+        }
+        .actions a {
+            margin-right: 5px;
+            text-decoration: none;
+            color: #007bff;
+            transition: color 0.3s ease;
+        }
+        .actions a:hover {
+            color: #0056b3;
+        }
+        .no-records {
+            text-align: center;
+            color: #777;
+        }
+        .button {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            text-decoration: none;
+            transition: background-color 0.3s ease;
+        }
+        .button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Question</th>
+                <th>Reponse</th>
+                <th>Note</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for question in questions %}
+            <tr>
+                <td>{{ question.id }}</td>
+                <td>{{ question.question }}</td>
+                <td>{{ question.reponse }}</td>
+                <td>{{ question.note }}</td>
+                <td>
+                    
+                    <a href="{{ path('app_question_edit', {'id': question.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="5">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    <center>
+<a href="{{ path('app_quiz_index', {'id': quiz.courid.id}) }}">back to Quizes</a>
+</center>
+{% endblock %}

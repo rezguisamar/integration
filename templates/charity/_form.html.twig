@@ -1,0 +1,65 @@
+{{ form_start(form, {'attr': {'class': 'example-wrapper'}}) }}
+
+<style>
+	.example-wrapper {
+		margin: 1em auto;
+		max-width: 800px;
+		width: 95%;
+		font: 18px / 1.5 sans-serif;
+	}
+
+	.example-wrapper code {
+		background: #F5F5F5;
+		padding: 2px 6px;
+	}
+	.container-fluid {
+		background-color: #F0F8FF;
+	}
+
+	/* Add spacing between labels and input fields */
+	.form-group {
+		margin-bottom: 15px;
+	}
+	.error-message {
+		color: #8B0000;
+	}
+</style>
+
+<div class="container-fluid" data-parallax="scroll" data-image-src="assets/img/carousel-2.jpg">
+	<div class="container py-5">
+		<div class="row justify-content-center">
+			<div class="col-lg-7">
+				<div class="bg-white rounded p-4 p-sm-5 wow fadeIn" data-wow-delay="0.5s">
+					<div class="form-group">
+						{{ form_label(form.name_of_charity, 'Charity Name', {'label_attr': {'class': 'form-label'}}) }}
+						{{ form_widget(form.name_of_charity, {'attr': {'class': 'form-control bg-light border-0', 'placeholder': 'Name of charity'}}) }}
+						{{form_errors(form.name_of_charity)}}
+					</div>
+
+					<div class="form-group">
+						{{ form_label(form.last_date, 'Last Date', {'label_attr': {'class': 'form-label'}}) }}
+						{{ form_widget(form.last_date, {'attr': {'class': 'form-control bg-light border-0', 'placeholder': 'Last Date','type': 'date'}}) }}
+						{{form_errors(form.last_date)}}
+					</div>
+
+					<div class="form-group">
+						{{ form_label(form.picture, 'Picture', {'label_attr': {'class': 'form-label'}}) }}
+						{{ form_widget(form.picture, {'attr': {'class': 'form-control-file form-control-sm bg-light border-0', 'placeholder': 'Upload photo'}}) }}
+						{{ form_errors(form.picture, {'attr': {'class': 'error-message'}}) }}
+					</div>
+
+					<div class="form-group">
+						{{ form_label(form.amount_donated, 'Amount needed', {'label_attr': {'class': 'form-label'}}) }}
+						{{ form_widget(form.amount_donated, {'attr': {'class': 'form-control bg-light border-0', 'placeholder': 'Amount Needer'}}) }}
+						{{form_errors(form.amount_donated)}}
+					</div>
+
+
+					<button class="btn btn-primary py-3 px-4">{{button_label|default('save')}}</button>
+
+
+				</div>
+			</div>
+		</div>
+	</div>
+</div></div>{{ form_end(form) }}

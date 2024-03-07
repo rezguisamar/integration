@@ -1,0 +1,54 @@
+{% extends 'baseBack.html.twig' %}
+{% block body %}
+
+
+<div class="row" style="display: flex;align-items: center;justify-content: center;margin-top: 150px;">
+
+    <div class="col-lg-6">
+
+        <div class="card">
+            <div class="card-body">
+                <a href="{{ path('addJob') }}"><i class="ri-arrow-left-circle-fill" style="font-size: 50px;"></i></a>
+                <h5 class="card-title">Job List</h5>
+
+                <!-- Table with stripped rows -->
+                <table class="table table-striped">
+                    <thead>
+                    <tr>     <th>Title</th>
+                        <th>Organisation</th>
+                        <th>Role</th>
+                        <th>start_date</th>
+                        <th>Modify</th>
+                        <th>Delete</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for view in v %}
+                        <tr>
+                            <td>{{ view.title }}</td>
+                            <td>{{ view.role }}</td>
+                            <td>{{ view.OrgName }}</td>
+                            <td>{{ view.StartDate }}</td>
+                            <td>
+                                <a class="btn btn-success" href="{{ path('modifyJob',{'id':view.id}) }}">Modify</a>
+                            </td>
+                            <td>
+                                <a class="btn btn-danger" href="{{ path('del_job',{'id':view.id}) }}">Delete</a>
+                            </td>
+                        </tr>
+
+                    {% endfor %}
+
+                    </tbody>
+                </table>
+                <!-- End small tables -->
+
+            </div>
+        </div>
+
+    </div>
+
+
+
+</div>
+{% endblock %}

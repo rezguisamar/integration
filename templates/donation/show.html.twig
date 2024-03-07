@@ -1,0 +1,49 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Donation
+{% endblock %}
+
+{% block body %}
+	<h1>Donation</h1>
+
+	<table class="table">
+		<tbody>
+			<tr>
+				<th>Id</th>
+				<td>{{ donation.id }}</td>
+			</tr>
+			<tr>
+				<th>Id_donation</th>
+				<td>{{ donation.idDonation }}</td>
+			</tr>
+			<tr>
+				<th>Id_charity</th>
+				<td>{{ donation.idCharity }}</td>
+			</tr>
+			<tr>
+				<th>Address</th>
+				<td>{{ donation.address }}</td>
+			</tr>
+			<tr>
+				<th>Date</th>
+				<td>{{ donation.date }}</td>
+			</tr>
+			<tr>
+				<th>FirstName</th>
+				<td>{{ donation.firstName }}</td>
+			</tr>
+			<tr>
+				<th>LastName</th>
+				<td>{{ donation.lastName }}</td>
+			</tr>
+			<tr>
+				<th>PhoneNumber</th>
+				<td>{{ donation.phoneNumber }}</td>
+			</tr>
+		</tbody>
+	</table>
+
+	<a href="{{ path('app_donation_index') }}">back to list</a>
+
+
+{% endblock %}

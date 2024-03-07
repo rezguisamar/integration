@@ -1,0 +1,83 @@
+{% extends 'baseBack.html.twig' %}
+
+{% block title %}Event Index{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <style>
+        .pastel-green-bg {
+            background-color: #c3e6cb; /* Pastel green color */
+        }
+    </style>
+{% endblock %}
+
+{% block search %}
+    <div class="search-bar">
+        <form class="search-form d-flex align-items-center" method="POST" action="{{ path('app_event_search') }}">
+            <input type="text" name="query" placeholder="Search" title="Enter search keyword">
+            <button type="submit" title="Search"><i class="bi bi-search"></i></button>
+        </form>
+    </div><!-- End Search Bar -->
+{% endblock %}
+
+{% block body %}
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+
+    <div class="container pastel-green-bg">
+        <div class="row justify-content-center">
+            <div class="col-md-8 text-center">
+                <h1 class="display-4 mb-4">Event Index</h1>
+                <div>
+                    <h3>Filtre Niveau</h3>
+                    <form action="{{ path('app_event_filtre') }}" method="POST">
+                        <select id="filtre" name="filtre">
+                            <option value="donnation">donnation</option>
+                            <option value="action">action</option>
+                        </select>
+                        <input type="submit" value="Filtre" />
+                    </form>
+                </div>
+
+                <div id="searchResults">
+                    <!-- Search results will be displayed here -->
+                </div>
+
+                <table class="table">
+                    <tbody>
+                        {% for event in events %}
+                            <tr>
+                                <td>
+                                    <div class="card mb-4">
+                                        <div class="card-body">
+                                            <h5 class="card-title">{{ event.title }}</h5>
+                                            <p class="card-text">{{ event.description }}</p>
+                                            <ul class="list-unstyled">
+                                                <li><strong>Start Date:</strong> {{ event.startDate ? event.startDate|date('Y-m-d H:i:s') : '' }}</li>
+                                                <li><strong>End Date:</strong> {{ event.endDate ? event.endDate|date('Y-m-d H:i:s') : '' }}</li>
+                                                <li><strong>Capacity:</strong> {{ event.capacity }}</li>
+                                                <li><strong>Category:</strong> {{ event.category }}</li>
+                                            </ul>
+                                            <img src="{{ asset('event.jpg') }}" width="150" height="250" class="card-img-top" alt="{{ event.title }}">
+                                            <a href="{{ path('app_event_edit', {'id': event.id}) }}">edit</a>
+                                            <a href="{{ path('app_event_delete', {'id': event.id}) }}">delete</a>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                        {% else %}
+                            <tr>
+                                <td class="text-center" colspan="4">
+                                    <p class="lead">No records found</p>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+{% endblock %}

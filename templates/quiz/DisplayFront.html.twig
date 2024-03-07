@@ -1,0 +1,96 @@
+{% extends 'home.html.twig' %}
+
+{% block title %}Quiz: {{ quiz.titre }}{% endblock %}
+
+{% block body %}
+<style>
+.container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.question {
+    margin-bottom: 20px;
+}
+
+.response {
+    margin-top: 10px;
+}
+
+input[type="text"] {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+.btn {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: #fff;
+    text-decoration: none;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.btn-primary {
+    background-color: #007bff;
+}
+
+.btn-primary:hover {
+    background-color: #0056b3;
+}
+</style>
+
+<div class="container">
+    <center>
+        <h1>{{ quiz.titre }}</h1>
+    </center>
+    <!-- Add a div to display the timer -->
+    <center>
+    Time left : <div width="150" height="150" id="timer"></div></center>
+    <form id="quizForm" method="POST">
+        {% for question in questions %}
+        <div class="question">
+            <h2>{{ question.question }}</h2>
+            <div class="response">
+                <input type="text" id="response{{ loop.index }}" name="answers[{{ question.id }}]" placeholder="Your answer" required>
+            </div>
+        </div>
+        {% endfor %}
+        <button type="submit" class="btn btn-primary">Submit Quiz</button>
+    </form>
+</div>
+
+<script>
+    function startTimer(duration, display) {
+        var timer = duration, minutes, seconds;
+        var intervalId = setInterval(function () {
+            minutes = parseInt(timer / 60, 10);
+            seconds = parseInt(timer % 60, 10);
+
+            minutes = minutes < 10 ? "0" + minutes : minutes;
+            seconds = seconds < 10 ? "0" + seconds : seconds;
+
+            display.textContent = minutes + ":" + seconds;
+
+            if (--timer < 0) {
+                // Stop the timer
+                clearInterval(intervalId);
+                // Submit the quiz form when timer ends
+                document.getElementById("quizForm").submit();
+            }
+        }, 1000);
+    }
+    
+    window.onload = function () {
+        var minutes = 0.5; // Adjust the timer duration as needed
+        var display = document.querySelector('#timer');
+        startTimer(minutes * 60, display);
+    };
+</script>
+
+{% endblock %}

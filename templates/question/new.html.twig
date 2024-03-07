@@ -1,0 +1,21 @@
+{% extends 'baseBack.html.twig' %}
+
+{% block title %}New Question{% endblock %}
+
+{% block body %}
+{% if quiz.Questions|length < quiz.nbrq %}
+    <center>
+    <h1 style="margin-top:150px;">Question N° {{quiz.Questions|length +1}}</h1>
+    </center>
+
+    {{ include('question/_form.html.twig') }}
+{% else %}
+ <center>
+    <h1 style="margin-top:150px;">Question Done </h1>
+    </center>
+{% endif %}
+<center>
+
+<a href="{{ path('app_quiz_index', {'id': quiz.courid.id}) }}">Back to Quiz</a>
+</center>
+{% endblock %}

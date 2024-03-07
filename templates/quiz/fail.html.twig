@@ -1,0 +1,37 @@
+{% extends 'baseFront.html.twig' %}
+
+{% block title %}Quiz Failed{% endblock %}
+
+{% block body %}
+<div class="container mt-5">
+  <div class="row justify-content-center">
+    <div class="col-lg-6 col-md-8 col-sm-10">
+      <div class="card border-danger shadow">
+        <div class="card-header bg-danger text-white">
+          <h5 class="mb-0">Quiz Failed!</h5>
+        </div>
+        <div class="card-body">
+          <div class="row">
+            <div class="col-12">
+              <div class="d-flex flex-column align-items-center">
+                
+              </div>
+            </div>
+          </div>
+          <div class="row mt-4">
+            <div class="col-12">
+              <div class="d-flex flex-column align-items-center">
+                <p>Unfortunatly, You have failed the Quiz. </p>
+                <p>Try again in a while !.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="card-footer">
+          <a href="" class="btn btn-danger">Back</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

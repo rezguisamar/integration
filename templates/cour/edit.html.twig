@@ -1,0 +1,54 @@
+{% extends 'baseBack.html.twig' %}
+
+{% block title %}Edit Cour{% endblock %}
+
+{% block body %}
+    <h1>Edit Cour</h1>
+
+    {{ include('cour/_form.html.twig', {'button_label': 'Update'}) }}
+    
+
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        document.getElementById('courform').addEventListener('submit', function(event) {
+            var titre = document.getElementById('cour_titre').value.trim();
+            var description = document.getElementById('cour_description').value.trim();
+
+            if (titre === '' || description === '') {
+                event.preventDefault(); // Prevent form submission
+
+                // Remove existing error messages
+                var existingErrors = document.querySelectorAll('.input-error');
+                existingErrors.forEach(function(error) {
+                    error.remove();
+                });
+
+                // Create new error elements
+                if (titre === '') {
+                    var titreInput = document.getElementById('cour_titre');
+                    var titreError = document.createElement('div');
+                    titreError.className = 'input-error';
+                    titreError.textContent = 'Title cannot be blank.';
+                    titreError.style.color = 'red';
+                    titreInput.parentNode.insertBefore(titreError, titreInput.nextSibling);
+                }
+
+                if (description === '') {
+                    var descriptionInput = document.getElementById('cour_description');
+                    var descriptionError = document.createElement('div');
+                    descriptionError.className = 'input-error';
+                    descriptionError.textContent = 'Description cannot be blank.';
+                    descriptionError.style.color = 'red';
+                    descriptionInput.parentNode.insertBefore(descriptionError, descriptionInput.nextSibling);
+                }
+            }
+        });
+    });
+</script>
+
+
+    <a href="{{ path('app_cour_index') }}">back to list</a>
+
+    {{ include('cour/_delete_form.html.twig') }}
+{% endblock %}

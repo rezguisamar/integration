@@ -1,0 +1,53 @@
+{% extends 'baseBack.html.twig' %}
+
+{% block title %}Edit Question{% endblock %}
+
+{% block body %}
+   <center>
+    <h1 style="margin-top: 150px;">Edit Question</h1>
+    </center>
+
+    {{ include('question/_form.html.twig', {'button_label': 'Update'}) }}
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        document.getElementById('questform').addEventListener('submit', function(event) {
+            var quest = document.getElementById('question_question').value.trim();
+            var rep = document.getElementById('question_reponse').value.trim();
+
+            if (quest === '' || rep === '') {
+                event.preventDefault(); // Prevent form submission
+
+                // Remove existing error messages
+                var existingErrors = document.querySelectorAll('.input-error');
+                existingErrors.forEach(function(error) {
+                    error.remove();
+                });
+
+                // Create new error elements
+                if (quest === '') {
+                    var titreInput = document.getElementById('question_question');
+                    var titreError = document.createElement('div');
+                    titreError.className = 'input-error';
+                    titreError.textContent = 'Question cannot be blank.';
+                    titreError.style.color = 'red';
+                    titreInput.parentNode.insertBefore(titreError, titreInput.nextSibling);
+                }
+
+                if (rep === '') {
+                    var descriptionInput = document.getElementById('question_reponse');
+                    var descriptionError = document.createElement('div');
+                    descriptionError.className = 'input-error';
+                    descriptionError.textContent = 'Response cannot be blank.';
+                    descriptionError.style.color = 'red';
+                    descriptionInput.parentNode.insertBefore(descriptionError, descriptionInput.nextSibling);
+                }
+            }
+        });
+    });
+</script>
+<center>
+    <a href="{{ path('app_question_index', {'id': question.quizid.id}) }}">back to list</a>
+
+    {{ include('question/_delete_form.html.twig') }}
+    </center>
+{% endblock %}

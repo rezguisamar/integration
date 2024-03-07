@@ -1,0 +1,39 @@
+{% extends 'baseBack.html.twig' %}
+
+{% block title %}Edit Quiz{% endblock %}
+
+{% block body %}
+    <center>
+    <h1 style="margin-top:150px;">Edit Quiz</h1>
+    </center>
+
+    {{ include('quiz/_form.html.twig', {'button_label': 'Update'}) }}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        document.getElementById('quizform').addEventListener('submit', function(event) {
+            var titre = document.getElementById('quiz_titre').value.trim();
+            
+
+            if (titre === '') {
+                event.preventDefault(); // Prevent form submission
+
+                // Remove existing error messages
+                var existingErrors = document.querySelectorAll('.input-error');
+                existingErrors.forEach(function(error) {
+                    error.remove();
+                });
+                    var titreInput = document.getElementById('quiz_titre');
+                    var titreError = document.createElement('div');
+                    titreError.className = 'input-error';
+                    titreError.textContent = 'Title cannot be blank.';
+                    titreError.style.color = 'red';
+                    titreInput.parentNode.insertBefore(titreError, titreInput.nextSibling);
+                
+            }
+        });
+    });
+</script>
+    
+
+    {{ include('quiz/_delete_form.html.twig') }}
+{% endblock %}

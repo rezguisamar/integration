@@ -1,0 +1,10 @@
+<h1>Reset password</h1>
+
+<p>we're sending you this email because you requested a password reset. Click on this link to create a new password :</p>
+
+<a href="{{ url('app_reset_password', {token: resetToken.token}) }}">{{ url('app_reset_password', {token: resetToken.token}) }}</a>
+
+<p>This link will expire in {{ resetToken.expirationMessageKey|trans(resetToken.expirationMessageData, 'ResetPasswordBundle') }}.</p>
+<p>If you didn't request a password reset, you can ignore this email. Your password will not be changed.</p>
+
+<p>Cheers!</p>

@@ -1,0 +1,17 @@
+{% extends 'baseBack.html.twig' %}
+
+{% block title %}New Charity
+{% endblock %}
+
+{% block body %}
+	<h1>Create new Charity</h1>
+
+	{{ include('charity/_form.html.twig') }}
+
+		<button type="submit" class="btn btn-primary py-3 px-4" id="save-button">Edit</button>
+
+		<button type="submit" class="btn btn-primary py-3 px-4" id="save-button">Add</button>
+
+
+	<a href="{{ path('app_charity_index') }}">back to list</a>
+{% endblock %}

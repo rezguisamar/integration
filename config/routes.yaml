@@ -1,0 +1,6 @@
+#index:
+#    path: /
+#    controller: App\Controller\DefaultController::index
+toggle_online_status:
+  path: '/toggle-online-status'
+  controller: App\Controller\UserController::toggleOnlineStatus

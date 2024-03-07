@@ -1,0 +1,15 @@
+{% extends 'baseBack.html.twig' %}
+
+{% block title %}
+	<div style="text-align: center;">
+		<h1>Edit Donation</h1>
+	</div>
+{% endblock %}
+
+{% block body %}
+	<h1>Edit Donation</h1>
+
+	{{ include('donation_back/_form.html.twig', {'button_label': 'Update'}) }}
+
+
+{% endblock %}

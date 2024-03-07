@@ -1,0 +1,94 @@
+{% extends 'baseFront.html.twig' %}
+
+{% block title %}Event{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <style>
+        /* Custom styles */
+        .container {
+            margin-top: 50px; /* Exemple de style personnalisé */
+        }
+
+        .table {
+            border-collapse: collapse;
+            width: 100%;
+            margin-top: 20px;
+        }
+
+        .table th, .table td {
+            border: 1px solid #ddd;
+            padding: 8px;
+        }
+
+        .table th {
+            background-color: #f2f2f2;
+            font-weight: bold;
+        }
+
+        .table tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+
+        .btn-primary {
+            background-color: #007bff;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            text-decoration: none;
+        }
+
+        .btn-primary:hover {
+            background-color: #0056b3;
+        }
+    </style>
+{% endblock %}
+
+{% block body %}
+    <div class="container text-center">
+        <h1>Event</h1>
+<img src="{{asset('event.jpg')}}" width="150" height="250" class="card-img-top" alt="{{ event.title }}">
+
+        <div class="mx-auto" style="width: 70%;">
+            <table class="table">
+                <tbody>
+                    <tr>
+                        <th>Id</th>
+                        <td>{{ event.id }}</td>
+                    </tr>
+                    <tr>
+                        <th>Title</th>
+                        <td>{{ event.title }}</td>
+                    </tr>
+                    <tr>
+                        <th>Description</th>
+                        <td>{{ event.description }}</td>
+                    </tr>
+                    <tr>
+                        <th>StartDate</th>
+                        <td>{{ event.startDate ? event.startDate|date('Y-m-d H:i:s') : '' }}</td>
+                    </tr>
+                    <tr>
+                        <th>EndDate</th>
+                        <td>{{ event.endDate ? event.endDate|date('Y-m-d H:i:s') : '' }}</td>
+                    </tr>
+                    <tr>
+                        <th>Capacity</th>
+                        <td>{{ event.capacity }}</td>
+                    </tr>
+                    
+                       <tr>
+                        <th>Reservation</th>
+                        
+                    </tr>
+                    
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <a href="{{ path('app_event_index') }}" class="btn btn-primary">Back to list</a>
+
+   
+{% endblock %}

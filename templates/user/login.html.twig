@@ -1,0 +1,55 @@
+{% extends 'baseFront.html.twig' %}
+{% block title %}Hello LoginController!{% endblock %}
+
+{% block body %}
+<style>
+    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
+    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
+</style>
+    <div class="container-fluid quote my-5 py-5" data-parallax="scroll" data-image-src="assets/img/carousel-2.jpg">
+        <div class="container py-5">
+            <div class="row justify-content-center">
+                <div class="col-lg-7">
+                    <div class="bg-white rounded p-4 p-sm-5 wow fadeIn" data-wow-delay="0.5s">
+                        <h2 class="display-5 text-center mb-5">Greenta - Login</h2>
+                        <div class="row g-3">
+                            <form class="row g-3 needs-validation" novalidate>
+                            <div class="col-sm-12">
+                                {{ form_label(form.email)}}
+                                {{ form_widget(form.email,{'attr':{'type':'text','class':'form-control bg-light border-0'}}) }}
+                                {{ form_errors(form.email)}}
+                                </div>
+                            </div>
+                            <div class="col-sm-12">
+                                <div class="form-floating">
+                                    <input type="password" class="form-control bg-light border-0" id="password" placeholder="Gurdian password">
+                                    <label for="password">Your Password</label>
+                                </div>
+                            </div>
+                            </form>
+                            <div class="col-12 text-center">
+                                <a class="btn btn-primary py-3 px-4" type="submit"href="{{ path('app_acceuil') }}">Login</a>
+                            </div>
+                            <div class="col-12 text-lg-center">
+                                <button class="btn btn btn-link" type="button">
+                                    <label style="color: gray">Don't have an account? <a href="{{ path('app_user_new') }}"> Join Us !</a></label>
+                                </button>
+                            </div>
+                            <div class="col-12 text-lg-end">
+                                <button class="btn btn btn-link" type="button">
+                                    <a href="">Forgot your password?</a>
+                                </button>
+                            </div>
+                            <div class="col-12 text-lg-end">
+                                <button class="btn" type="button">
+                                    <a href="">Sign in as an organisation</a>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Quote End -->
+{% endblock %}

@@ -1,0 +1,69 @@
+{% block body %}
+{{ form_start(form, {'attr': {'class': 'example-wrapper'}}) }}
+
+<style>
+    .example-wrapper {
+        margin: 1em auto;
+        max-width: 800px;
+        width: 95%;
+        font: 18px / 1.5 sans-serif;
+    }
+
+    .example-wrapper code {
+        background: #F5F5F5;
+        padding: 2px 6px;
+    }
+    .container-fluid {
+        background-color: #F0F8FF;
+    }
+
+    /* Add spacing between labels and input fields */
+    .form-group {
+        margin-bottom: 15px;
+    }
+    .error-message {
+        color: #8B0000;
+    }
+</style>
+<div class="card-body">
+    <h5 class="card-title">Apply to the job</h5>
+ 
+    <div class="row mb-3">
+        <label for="inputText" class="col-sm-2 col-form-label">First Name</label>
+        <div class="col-sm-10">
+            {{ form_widget(form.firstname, {'attr': {'class': 'form-control bg-light border-0', 'placeholder': 'First Name'}}) }}
+            {{ form_errors(form.firstname) }}
+        </div>
+    </div>
+    <div class="row mb-3">
+        <label for="inputText" class="col-sm-2 col-form-label">Last Name</label>
+        <div class="col-sm-10">
+            {{ form_widget(form.lastname, {'attr': {'class': 'form-control bg-light border-0', 'placeholder': 'Last Name'}}) }}
+            {{ form_errors(form.lastname) }}
+        </div>
+    </div>
+    <div class="row mb-3">
+        <label for="inputEmail" class="col-sm-2 col-form-label">Email</label>
+        <div class="col-sm-10">
+            {{ form_widget(form.email, {'attr': {'class': 'form-control bg-light border-0', 'placeholder': 'Your Email here'}}) }}
+            {{ form_errors(form.email) }}
+        </div>
+    </div>
+              
+    <div class="row mb-3">
+        <label for="inputText" class="col-sm-2 col-form-label">Upload resume</label>
+        <div class="col-sm-10">
+            {{ form_widget(form.pdf, {'attr': {'class': 'form-control-file form-control-sm bg-light border-0', 'placeholder': 'Upload pdf'}}) }}
+            {{ form_errors(form.pdf) }}
+        </div>
+    </div>
+                
+    <div class="row mb-3">
+        <label class="col-sm-2 col-form-label">Submit Application</label>
+        <div class="col-sm-10">
+            <button class="btn btn-primary py-3 px-4">{{ button_label|default('Confirme') }}</button>
+        </div>
+    </div>
+</div>
+{{ form_end(form) }}
+{% endblock %}

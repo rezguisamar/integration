@@ -1,0 +1,988 @@
+Index: src/Controller/CharityFrontController.php
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?php\r\n\r\nnamespace App\\Controller;\r\n\r\nuse App\\Entity\\Charity;\r\nuse App\\Form\\Charity1Type;\r\nuse App\\Repository\\CharityRepository;\r\nuse Doctrine\\ORM\\EntityManagerInterface;\r\nuse Symfony\\Bundle\\FrameworkBundle\\Controller\\AbstractController;\r\nuse Symfony\\Component\\HttpFoundation\\Request;\r\nuse Symfony\\Component\\HttpFoundation\\Response;\r\nuse Symfony\\Component\\Routing\\Annotation\\Route;\r\n\r\n#[Route('/charity/front')]\r\nclass CharityFrontController extends AbstractController\r\n{\r\n    #[Route('/all', name: 'app_charity_front_index', methods: ['GET'])]\r\n    public function index(CharityRepository $charityRepository): Response\r\n    {\r\n        return $this->render('charity_front/index.html.twig', [\r\n            'charities' => $charityRepository->findAll(),\r\n        ]);\r\n    }\r\n\r\n    #[Route('/new', name: 'app_charity_front_new', methods: ['GET', 'POST'])]\r\n    public function new(Request $request, EntityManagerInterface $entityManager): Response\r\n    {\r\n        $charity = new Charity();\r\n        $form = $this->createForm(CharityType::class, $charity);\r\n        $form->handleRequest($request);\r\n\r\n        if ($form->isSubmitted() && $form->isValid()) {\r\n            // Récupérer le fichier téléchargé depuis le formulaire\r\n            $file = $form->get('picture')->getData();\r\n\r\n            //handle photos upload second fucntion \r\n            $file = $form->get('picture')->getData(); // Get the uploaded file from the form\r\n            if ($file) {\r\n                //Handle photos upload\r\n                $filename = md5(uniqid()) . '.' . $file->guessExtension();\r\n\r\n\r\n                $file->move($this->getParameter('uploads_directory'), $filename);\r\n                $charity->setPicture($filename);\r\n            }\r\n\r\n\r\n\r\n\r\n            // Persistez et flushz l'entité charity\r\n            $entityManager->persist($charity);\r\n            $entityManager->flush();\r\n\r\n            // Rediriger vers la page d'index des charity\r\n            return $this->redirectToRoute('app_charity_index', [], Response::HTTP_SEE_OTHER);\r\n        }\r\n\r\n        // Afficher le formulaire\r\n        return $this->renderForm('charity/new.html.twig', [\r\n            'charity' => $charity,\r\n            'form' => $form,\r\n        ]);\r\n    }\r\n\r\n\r\n    #[Route('/{id}', name: 'app_charity_front_show', methods: ['GET'])]\r\n    public function show(Request $request, EntityManagerInterface $entityManager, Charity $charities): Response\r\n    {\r\n\r\n\r\n        return $this->render('charity_front/show.html.twig', [\r\n            'charity' => $charities,\r\n        ]);\r\n    }\r\n\r\n    /* #[Route('/{id}/edit', name: 'app_charity_front_edit', methods: ['GET', 'POST'])]\r\n    public function edit(Request $request, Charity $charity, EntityManagerInterface $entityManager): Response\r\n    {\r\n        $form = $this->createForm(Charity1Type::class, $charity);\r\n        $form->handleRequest($request);\r\n\r\n        if ($form->isSubmitted() && $form->isValid()) {\r\n            $entityManager->flush();\r\n\r\n            return $this->redirectToRoute('app_charity_front_index', [], Response::HTTP_SEE_OTHER);\r\n        }\r\n\r\n        return $this->renderForm('charity_front/edit.html.twig', [\r\n            'charity' => $charity,\r\n            'form' => $form,\r\n        ]);\r\n    }\r\n\r\n    #[Route('/{id}', name: 'app_charity_front_delete', methods: ['POST'])]\r\n    public function delete(Request $request, Charity $charity, EntityManagerInterface $entityManager): Response\r\n    {\r\n        if ($this->isCsrfTokenValid('delete' . $charity->getId(), $request->request->get('_token'))) {\r\n            $entityManager->remove($charity);\r\n            $entityManager->flush();\r\n        }\r\n\r\n        return $this->redirectToRoute('app_charity_front_index', [], Response::HTTP_SEE_OTHER);\r\n    }*/\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/Controller/CharityFrontController.php b/src/Controller/CharityFrontController.php
+--- a/src/Controller/CharityFrontController.php	(revision 604b6a6ac51465d5194c6d89f1c3d4bbf45275a4)
++++ b/src/Controller/CharityFrontController.php	(date 1709728338739)
+@@ -4,6 +4,7 @@
+ 
+ use App\Entity\Charity;
+ use App\Form\Charity1Type;
++use App\Form\CharityType;
+ use App\Repository\CharityRepository;
+ use Doctrine\ORM\EntityManagerInterface;
+ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+Index: migrations/Version20240214142915.php
+===================================================================
+diff --git a/migrations/Version20240214142915.php b/migrations/Version20240214142915.php
+deleted file mode 100644
+--- a/migrations/Version20240214142915.php	(revision 604b6a6ac51465d5194c6d89f1c3d4bbf45275a4)
++++ /dev/null	(revision 604b6a6ac51465d5194c6d89f1c3d4bbf45275a4)
+@@ -1,37 +0,0 @@
+-<?php
+-
+-declare(strict_types=1);
+-
+-namespace DoctrineMigrations;
+-
+-use Doctrine\DBAL\Schema\Schema;
+-use Doctrine\Migrations\AbstractMigration;
+-
+-/**
+- * Auto-generated Migration: Please modify to your needs!
+- */
+-final class Version20240214142915 extends AbstractMigration
+-{
+-    public function getDescription(): string
+-    {
+-        return '';
+-    }
+-
+-    public function up(Schema $schema): void
+-    {
+-        // this up() migration is auto-generated, please modify it to your needs
+-        $this->addSql('ALTER TABLE charity CHANGE id_charity id_charity INT NOT NULL');
+-        $this->addSql('ALTER TABLE donation ADD charity_id INT NOT NULL');
+-        $this->addSql('ALTER TABLE donation ADD CONSTRAINT FK_31E581A0F5C97E37 FOREIGN KEY (charity_id) REFERENCES charity (id)');
+-        $this->addSql('CREATE UNIQUE INDEX UNIQ_31E581A0F5C97E37 ON donation (charity_id)');
+-    }
+-
+-    public function down(Schema $schema): void
+-    {
+-        // this down() migration is auto-generated, please modify it to your needs
+-        $this->addSql('ALTER TABLE charity CHANGE id_charity id_charity VARCHAR(255) NOT NULL');
+-        $this->addSql('ALTER TABLE donation DROP FOREIGN KEY FK_31E581A0F5C97E37');
+-        $this->addSql('DROP INDEX UNIQ_31E581A0F5C97E37 ON donation');
+-        $this->addSql('ALTER TABLE donation DROP charity_id');
+-    }
+-}
+Index: migrations/Version20240215090445.php
+===================================================================
+diff --git a/migrations/Version20240215090445.php b/migrations/Version20240215090445.php
+deleted file mode 100644
+--- a/migrations/Version20240215090445.php	(revision 604b6a6ac51465d5194c6d89f1c3d4bbf45275a4)
++++ /dev/null	(revision 604b6a6ac51465d5194c6d89f1c3d4bbf45275a4)
+@@ -1,33 +0,0 @@
+-<?php
+-
+-declare(strict_types=1);
+-
+-namespace DoctrineMigrations;
+-
+-use Doctrine\DBAL\Schema\Schema;
+-use Doctrine\Migrations\AbstractMigration;
+-
+-/**
+- * Auto-generated Migration: Please modify to your needs!
+- */
+-final class Version20240215090445 extends AbstractMigration
+-{
+-    public function getDescription(): string
+-    {
+-        return '';
+-    }
+-
+-    public function up(Schema $schema): void
+-    {
+-        // this up() migration is auto-generated, please modify it to your needs
+-        $this->addSql('ALTER TABLE charity DROP id_charity');
+-        $this->addSql('ALTER TABLE donation DROP id_donation');
+-    }
+-
+-    public function down(Schema $schema): void
+-    {
+-        // this down() migration is auto-generated, please modify it to your needs
+-        $this->addSql('ALTER TABLE charity ADD id_charity INT NOT NULL');
+-        $this->addSql('ALTER TABLE donation ADD id_donation INT NOT NULL');
+-    }
+-}
+Index: migrations/Version20240220202017.php
+===================================================================
+diff --git a/migrations/Version20240220202017.php b/migrations/Version20240220202017.php
+deleted file mode 100644
+--- a/migrations/Version20240220202017.php	(revision 604b6a6ac51465d5194c6d89f1c3d4bbf45275a4)
++++ /dev/null	(revision 604b6a6ac51465d5194c6d89f1c3d4bbf45275a4)
+@@ -1,31 +0,0 @@
+-<?php
+-
+-declare(strict_types=1);
+-
+-namespace DoctrineMigrations;
+-
+-use Doctrine\DBAL\Schema\Schema;
+-use Doctrine\Migrations\AbstractMigration;
+-
+-/**
+- * Auto-generated Migration: Please modify to your needs!
+- */
+-final class Version20240220202017 extends AbstractMigration
+-{
+-    public function getDescription(): string
+-    {
+-        return '';
+-    }
+-
+-    public function up(Schema $schema): void
+-    {
+-        // this up() migration is auto-generated, please modify it to your needs
+-        $this->addSql('ALTER TABLE charity DROP last_date');
+-    }
+-
+-    public function down(Schema $schema): void
+-    {
+-        // this down() migration is auto-generated, please modify it to your needs
+-        $this->addSql('ALTER TABLE charity ADD last_date DATE NOT NULL');
+-    }
+-}
+Index: migrations/Version20240224125653.php
+===================================================================
+diff --git a/migrations/Version20240224125653.php b/migrations/Version20240224125653.php
+deleted file mode 100644
+--- a/migrations/Version20240224125653.php	(revision 604b6a6ac51465d5194c6d89f1c3d4bbf45275a4)
++++ /dev/null	(revision 604b6a6ac51465d5194c6d89f1c3d4bbf45275a4)
+@@ -1,31 +0,0 @@
+-<?php
+-
+-declare(strict_types=1);
+-
+-namespace DoctrineMigrations;
+-
+-use Doctrine\DBAL\Schema\Schema;
+-use Doctrine\Migrations\AbstractMigration;
+-
+-/**
+- * Auto-generated Migration: Please modify to your needs!
+- */
+-final class Version20240224125653 extends AbstractMigration
+-{
+-    public function getDescription(): string
+-    {
+-        return '';
+-    }
+-
+-    public function up(Schema $schema): void
+-    {
+-        // this up() migration is auto-generated, please modify it to your needs
+-        $this->addSql('ALTER TABLE user ADD image LONGBLOB DEFAULT NULL, CHANGE roles roles VARCHAR(255) NOT NULL');
+-    }
+-
+-    public function down(Schema $schema): void
+-    {
+-        // this down() migration is auto-generated, please modify it to your needs
+-        $this->addSql('ALTER TABLE user DROP image, CHANGE roles roles VARCHAR(255) DEFAULT NULL');
+-    }
+-}
+Index: migrations/Version20240218142723.php
+===================================================================
+diff --git a/migrations/Version20240218142723.php b/migrations/Version20240218142723.php
+deleted file mode 100644
+--- a/migrations/Version20240218142723.php	(revision 604b6a6ac51465d5194c6d89f1c3d4bbf45275a4)
++++ /dev/null	(revision 604b6a6ac51465d5194c6d89f1c3d4bbf45275a4)
+@@ -1,31 +0,0 @@
+-<?php
+-
+-declare(strict_types=1);
+-
+-namespace DoctrineMigrations;
+-
+-use Doctrine\DBAL\Schema\Schema;
+-use Doctrine\Migrations\AbstractMigration;
+-
+-/**
+- * Auto-generated Migration: Please modify to your needs!
+- */
+-final class Version20240218142723 extends AbstractMigration
+-{
+-    public function getDescription(): string
+-    {
+-        return '';
+-    }
+-
+-    public function up(Schema $schema): void
+-    {
+-        // this up() migration is auto-generated, please modify it to your needs
+-        $this->addSql('ALTER TABLE charity CHANGE amount_donated amount_donated DOUBLE PRECISION NOT NULL, CHANGE total_of_donation total_of_donation DOUBLE PRECISION NOT NULL');
+-    }
+-
+-    public function down(Schema $schema): void
+-    {
+-        // this down() migration is auto-generated, please modify it to your needs
+-        $this->addSql('ALTER TABLE charity CHANGE amount_donated amount_donated VARCHAR(255) NOT NULL, CHANGE total_of_donation total_of_donation VARCHAR(255) NOT NULL');
+-    }
+-}
+Index: migrations/Version20240212120724.php
+===================================================================
+diff --git a/migrations/Version20240212120724.php b/migrations/Version20240212120724.php
+deleted file mode 100644
+--- a/migrations/Version20240212120724.php	(revision 604b6a6ac51465d5194c6d89f1c3d4bbf45275a4)
++++ /dev/null	(revision 604b6a6ac51465d5194c6d89f1c3d4bbf45275a4)
+@@ -1,31 +0,0 @@
+-<?php
+-
+-declare(strict_types=1);
+-
+-namespace DoctrineMigrations;
+-
+-use Doctrine\DBAL\Schema\Schema;
+-use Doctrine\Migrations\AbstractMigration;
+-
+-/**
+- * Auto-generated Migration: Please modify to your needs!
+- */
+-final class Version20240212120724 extends AbstractMigration
+-{
+-    public function getDescription(): string
+-    {
+-        return '';
+-    }
+-
+-    public function up(Schema $schema): void
+-    {
+-        // this up() migration is auto-generated, please modify it to your needs
+-        $this->addSql('ALTER TABLE user ADD is_verified TINYINT(1) NOT NULL');
+-    }
+-
+-    public function down(Schema $schema): void
+-    {
+-        // this down() migration is auto-generated, please modify it to your needs
+-        $this->addSql('ALTER TABLE user DROP is_verified');
+-    }
+-}
+Index: migrations/Version20240218145719.php
+===================================================================
+diff --git a/migrations/Version20240218145719.php b/migrations/Version20240218145719.php
+deleted file mode 100644
+--- a/migrations/Version20240218145719.php	(revision 604b6a6ac51465d5194c6d89f1c3d4bbf45275a4)
++++ /dev/null	(revision 604b6a6ac51465d5194c6d89f1c3d4bbf45275a4)
+@@ -1,31 +0,0 @@
+-<?php
+-
+-declare(strict_types=1);
+-
+-namespace DoctrineMigrations;
+-
+-use Doctrine\DBAL\Schema\Schema;
+-use Doctrine\Migrations\AbstractMigration;
+-
+-/**
+- * Auto-generated Migration: Please modify to your needs!
+- */
+-final class Version20240218145719 extends AbstractMigration
+-{
+-    public function getDescription(): string
+-    {
+-        return '';
+-    }
+-
+-    public function up(Schema $schema): void
+-    {
+-        // this up() migration is auto-generated, please modify it to your needs
+-        $this->addSql('ALTER TABLE charity CHANGE last_date last_date DATETIME NOT NULL');
+-    }
+-
+-    public function down(Schema $schema): void
+-    {
+-        // this down() migration is auto-generated, please modify it to your needs
+-        $this->addSql('ALTER TABLE charity CHANGE last_date last_date VARCHAR(255) NOT NULL');
+-    }
+-}
+Index: migrations/Version20240220192136.php
+===================================================================
+diff --git a/migrations/Version20240220192136.php b/migrations/Version20240220192136.php
+deleted file mode 100644
+--- a/migrations/Version20240220192136.php	(revision 604b6a6ac51465d5194c6d89f1c3d4bbf45275a4)
++++ /dev/null	(revision 604b6a6ac51465d5194c6d89f1c3d4bbf45275a4)
+@@ -1,31 +0,0 @@
+-<?php
+-
+-declare(strict_types=1);
+-
+-namespace DoctrineMigrations;
+-
+-use Doctrine\DBAL\Schema\Schema;
+-use Doctrine\Migrations\AbstractMigration;
+-
+-/**
+- * Auto-generated Migration: Please modify to your needs!
+- */
+-final class Version20240220192136 extends AbstractMigration
+-{
+-    public function getDescription(): string
+-    {
+-        return '';
+-    }
+-
+-    public function up(Schema $schema): void
+-    {
+-        // this up() migration is auto-generated, please modify it to your needs
+-        $this->addSql('ALTER TABLE charity CHANGE charity_pic picture VARCHAR(255) NOT NULL');
+-    }
+-
+-    public function down(Schema $schema): void
+-    {
+-        // this down() migration is auto-generated, please modify it to your needs
+-        $this->addSql('ALTER TABLE charity CHANGE picture charity_pic VARCHAR(255) NOT NULL');
+-    }
+-}
+Index: migrations/Version20240220202242.php
+===================================================================
+diff --git a/migrations/Version20240220202242.php b/migrations/Version20240220202242.php
+deleted file mode 100644
+--- a/migrations/Version20240220202242.php	(revision 604b6a6ac51465d5194c6d89f1c3d4bbf45275a4)
++++ /dev/null	(revision 604b6a6ac51465d5194c6d89f1c3d4bbf45275a4)
+@@ -1,31 +0,0 @@
+-<?php
+-
+-declare(strict_types=1);
+-
+-namespace DoctrineMigrations;
+-
+-use Doctrine\DBAL\Schema\Schema;
+-use Doctrine\Migrations\AbstractMigration;
+-
+-/**
+- * Auto-generated Migration: Please modify to your needs!
+- */
+-final class Version20240220202242 extends AbstractMigration
+-{
+-    public function getDescription(): string
+-    {
+-        return '';
+-    }
+-
+-    public function up(Schema $schema): void
+-    {
+-        // this up() migration is auto-generated, please modify it to your needs
+-        $this->addSql('ALTER TABLE charity ADD last_date DATE NOT NULL');
+-    }
+-
+-    public function down(Schema $schema): void
+-    {
+-        // this down() migration is auto-generated, please modify it to your needs
+-        $this->addSql('ALTER TABLE charity DROP last_date');
+-    }
+-}
+Index: migrations/Version20240224140611.php
+===================================================================
+diff --git a/migrations/Version20240224140611.php b/migrations/Version20240224140611.php
+deleted file mode 100644
+--- a/migrations/Version20240224140611.php	(revision 604b6a6ac51465d5194c6d89f1c3d4bbf45275a4)
++++ /dev/null	(revision 604b6a6ac51465d5194c6d89f1c3d4bbf45275a4)
+@@ -1,33 +0,0 @@
+-<?php
+-
+-declare(strict_types=1);
+-
+-namespace DoctrineMigrations;
+-
+-use Doctrine\DBAL\Schema\Schema;
+-use Doctrine\Migrations\AbstractMigration;
+-
+-/**
+- * Auto-generated Migration: Please modify to your needs!
+- */
+-final class Version20240224140611 extends AbstractMigration
+-{
+-    public function getDescription(): string
+-    {
+-        return '';
+-    }
+-
+-    public function up(Schema $schema): void
+-    {
+-        // this up() migration is auto-generated, please modify it to your needs
+-        $this->addSql('CREATE TABLE reset_password_request (id INT AUTO_INCREMENT NOT NULL, user_id INT NOT NULL, selector VARCHAR(20) NOT NULL, hashed_token VARCHAR(100) NOT NULL, requested_at DATETIME NOT NULL COMMENT \'(DC2Type:datetime_immutable)\', expires_at DATETIME NOT NULL COMMENT \'(DC2Type:datetime_immutable)\', INDEX IDX_7CE748AA76ED395 (user_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
+-        $this->addSql('ALTER TABLE reset_password_request ADD CONSTRAINT FK_7CE748AA76ED395 FOREIGN KEY (user_id) REFERENCES user (id)');
+-    }
+-
+-    public function down(Schema $schema): void
+-    {
+-        // this down() migration is auto-generated, please modify it to your needs
+-        $this->addSql('ALTER TABLE reset_password_request DROP FOREIGN KEY FK_7CE748AA76ED395');
+-        $this->addSql('DROP TABLE reset_password_request');
+-    }
+-}
+Index: migrations/Version20240303164225.php
+===================================================================
+diff --git a/migrations/Version20240303164225.php b/migrations/Version20240303164225.php
+deleted file mode 100644
+--- a/migrations/Version20240303164225.php	(revision 604b6a6ac51465d5194c6d89f1c3d4bbf45275a4)
++++ /dev/null	(revision 604b6a6ac51465d5194c6d89f1c3d4bbf45275a4)
+@@ -1,35 +0,0 @@
+-<?php
+-
+-declare(strict_types=1);
+-
+-namespace DoctrineMigrations;
+-
+-use Doctrine\DBAL\Schema\Schema;
+-use Doctrine\Migrations\AbstractMigration;
+-
+-/**
+- * Auto-generated Migration: Please modify to your needs!
+- */
+-final class Version20240303164225 extends AbstractMigration
+-{
+-    public function getDescription(): string
+-    {
+-        return '';
+-    }
+-
+-    public function up(Schema $schema): void
+-    {
+-        // this up() migration is auto-generated, please modify it to your needs
+-        $this->addSql('ALTER TABLE user DROP FOREIGN KEY FK_8D93D649D249A887');
+-        $this->addSql('DROP INDEX UNIQ_8D93D649D249A887 ON user');
+-        $this->addSql('ALTER TABLE user DROP feedback_id, DROP is_verified');
+-    }
+-
+-    public function down(Schema $schema): void
+-    {
+-        // this down() migration is auto-generated, please modify it to your needs
+-        $this->addSql('ALTER TABLE user ADD feedback_id INT DEFAULT NULL, ADD is_verified TINYINT(1) NOT NULL');
+-        $this->addSql('ALTER TABLE user ADD CONSTRAINT FK_8D93D649D249A887 FOREIGN KEY (feedback_id) REFERENCES feedback (id) ON UPDATE NO ACTION ON DELETE NO ACTION');
+-        $this->addSql('CREATE UNIQUE INDEX UNIQ_8D93D649D249A887 ON user (feedback_id)');
+-    }
+-}
+Index: migrations/Version20240215093441.php
+===================================================================
+diff --git a/migrations/Version20240215093441.php b/migrations/Version20240215093441.php
+deleted file mode 100644
+--- a/migrations/Version20240215093441.php	(revision 604b6a6ac51465d5194c6d89f1c3d4bbf45275a4)
++++ /dev/null	(revision 604b6a6ac51465d5194c6d89f1c3d4bbf45275a4)
+@@ -1,31 +0,0 @@
+-<?php
+-
+-declare(strict_types=1);
+-
+-namespace DoctrineMigrations;
+-
+-use Doctrine\DBAL\Schema\Schema;
+-use Doctrine\Migrations\AbstractMigration;
+-
+-/**
+- * Auto-generated Migration: Please modify to your needs!
+- */
+-final class Version20240215093441 extends AbstractMigration
+-{
+-    public function getDescription(): string
+-    {
+-        return '';
+-    }
+-
+-    public function up(Schema $schema): void
+-    {
+-        // this up() migration is auto-generated, please modify it to your needs
+-        $this->addSql('ALTER TABLE donation ADD amount VARCHAR(255) NOT NULL');
+-    }
+-
+-    public function down(Schema $schema): void
+-    {
+-        // this down() migration is auto-generated, please modify it to your needs
+-        $this->addSql('ALTER TABLE donation DROP amount');
+-    }
+-}
+Index: migrations/Version20240220194947.php
+===================================================================
+diff --git a/migrations/Version20240220194947.php b/migrations/Version20240220194947.php
+deleted file mode 100644
+--- a/migrations/Version20240220194947.php	(revision 604b6a6ac51465d5194c6d89f1c3d4bbf45275a4)
++++ /dev/null	(revision 604b6a6ac51465d5194c6d89f1c3d4bbf45275a4)
+@@ -1,31 +0,0 @@
+-<?php
+-
+-declare(strict_types=1);
+-
+-namespace DoctrineMigrations;
+-
+-use Doctrine\DBAL\Schema\Schema;
+-use Doctrine\Migrations\AbstractMigration;
+-
+-/**
+- * Auto-generated Migration: Please modify to your needs!
+- */
+-final class Version20240220194947 extends AbstractMigration
+-{
+-    public function getDescription(): string
+-    {
+-        return '';
+-    }
+-
+-    public function up(Schema $schema): void
+-    {
+-        // this up() migration is auto-generated, please modify it to your needs
+-        $this->addSql('ALTER TABLE charity CHANGE last_date last_date VARCHAR(255) NOT NULL');
+-    }
+-
+-    public function down(Schema $schema): void
+-    {
+-        // this down() migration is auto-generated, please modify it to your needs
+-        $this->addSql('ALTER TABLE charity CHANGE last_date last_date DATETIME NOT NULL');
+-    }
+-}
+Index: migrations/Version20240218172828.php
+===================================================================
+diff --git a/migrations/Version20240218172828.php b/migrations/Version20240218172828.php
+deleted file mode 100644
+--- a/migrations/Version20240218172828.php	(revision 604b6a6ac51465d5194c6d89f1c3d4bbf45275a4)
++++ /dev/null	(revision 604b6a6ac51465d5194c6d89f1c3d4bbf45275a4)
+@@ -1,31 +0,0 @@
+-<?php
+-
+-declare(strict_types=1);
+-
+-namespace DoctrineMigrations;
+-
+-use Doctrine\DBAL\Schema\Schema;
+-use Doctrine\Migrations\AbstractMigration;
+-
+-/**
+- * Auto-generated Migration: Please modify to your needs!
+- */
+-final class Version20240218172828 extends AbstractMigration
+-{
+-    public function getDescription(): string
+-    {
+-        return '';
+-    }
+-
+-    public function up(Schema $schema): void
+-    {
+-        // this up() migration is auto-generated, please modify it to your needs
+-        $this->addSql('ALTER TABLE charity ADD charity_pic VARCHAR(255) NOT NULL');
+-    }
+-
+-    public function down(Schema $schema): void
+-    {
+-        // this down() migration is auto-generated, please modify it to your needs
+-        $this->addSql('ALTER TABLE charity DROP charity_pic');
+-    }
+-}
+Index: migrations/Version20240211184713.php
+===================================================================
+diff --git a/migrations/Version20240211184713.php b/migrations/Version20240211184713.php
+deleted file mode 100644
+--- a/migrations/Version20240211184713.php	(revision 604b6a6ac51465d5194c6d89f1c3d4bbf45275a4)
++++ /dev/null	(revision 604b6a6ac51465d5194c6d89f1c3d4bbf45275a4)
+@@ -1,37 +0,0 @@
+-<?php
+-
+-declare(strict_types=1);
+-
+-namespace DoctrineMigrations;
+-
+-use Doctrine\DBAL\Schema\Schema;
+-use Doctrine\Migrations\AbstractMigration;
+-
+-/**
+- * Auto-generated Migration: Please modify to your needs!
+- */
+-final class Version20240211184713 extends AbstractMigration
+-{
+-    public function getDescription(): string
+-    {
+-        return '';
+-    }
+-
+-    public function up(Schema $schema): void
+-    {
+-        // this up() migration is auto-generated, please modify it to your needs
+-        $this->addSql('ALTER TABLE user ADD feedback_id INT DEFAULT NULL, ADD roles JSON NOT NULL, DROP type, CHANGE email email VARCHAR(180) NOT NULL');
+-        $this->addSql('ALTER TABLE user ADD CONSTRAINT FK_8D93D649D249A887 FOREIGN KEY (feedback_id) REFERENCES feedback (id)');
+-        $this->addSql('CREATE UNIQUE INDEX UNIQ_8D93D649E7927C74 ON user (email)');
+-        $this->addSql('CREATE UNIQUE INDEX UNIQ_8D93D649D249A887 ON user (feedback_id)');
+-    }
+-
+-    public function down(Schema $schema): void
+-    {
+-        // this down() migration is auto-generated, please modify it to your needs
+-        $this->addSql('ALTER TABLE user DROP FOREIGN KEY FK_8D93D649D249A887');
+-        $this->addSql('DROP INDEX UNIQ_8D93D649E7927C74 ON user');
+-        $this->addSql('DROP INDEX UNIQ_8D93D649D249A887 ON user');
+-        $this->addSql('ALTER TABLE user ADD type VARCHAR(255) NOT NULL, DROP feedback_id, DROP roles, CHANGE email email VARCHAR(255) NOT NULL');
+-    }
+-}
+Index: migrations/Version20240219225627.php
+===================================================================
+diff --git a/migrations/Version20240219225627.php b/migrations/Version20240219225627.php
+deleted file mode 100644
+--- a/migrations/Version20240219225627.php	(revision 604b6a6ac51465d5194c6d89f1c3d4bbf45275a4)
++++ /dev/null	(revision 604b6a6ac51465d5194c6d89f1c3d4bbf45275a4)
+@@ -1,31 +0,0 @@
+-<?php
+-
+-declare(strict_types=1);
+-
+-namespace DoctrineMigrations;
+-
+-use Doctrine\DBAL\Schema\Schema;
+-use Doctrine\Migrations\AbstractMigration;
+-
+-/**
+- * Auto-generated Migration: Please modify to your needs!
+- */
+-final class Version20240219225627 extends AbstractMigration
+-{
+-    public function getDescription(): string
+-    {
+-        return '';
+-    }
+-
+-    public function up(Schema $schema): void
+-    {
+-        // this up() migration is auto-generated, please modify it to your needs
+-        $this->addSql('ALTER TABLE donation CHANGE date date DATETIME NOT NULL, CHANGE amount amount DOUBLE PRECISION NOT NULL');
+-    }
+-
+-    public function down(Schema $schema): void
+-    {
+-        // this down() migration is auto-generated, please modify it to your needs
+-        $this->addSql('ALTER TABLE donation CHANGE date date VARCHAR(255) NOT NULL, CHANGE amount amount VARCHAR(255) NOT NULL');
+-    }
+-}
+Index: migrations/Version20240303162227.php
+===================================================================
+diff --git a/migrations/Version20240303162227.php b/migrations/Version20240303162227.php
+deleted file mode 100644
+--- a/migrations/Version20240303162227.php	(revision 604b6a6ac51465d5194c6d89f1c3d4bbf45275a4)
++++ /dev/null	(revision 604b6a6ac51465d5194c6d89f1c3d4bbf45275a4)
+@@ -1,31 +0,0 @@
+-<?php
+-
+-declare(strict_types=1);
+-
+-namespace DoctrineMigrations;
+-
+-use Doctrine\DBAL\Schema\Schema;
+-use Doctrine\Migrations\AbstractMigration;
+-
+-/**
+- * Auto-generated Migration: Please modify to your needs!
+- */
+-final class Version20240303162227 extends AbstractMigration
+-{
+-    public function getDescription(): string
+-    {
+-        return '';
+-    }
+-
+-    public function up(Schema $schema): void
+-    {
+-        // this up() migration is auto-generated, please modify it to your needs
+-        $this->addSql('ALTER TABLE user ADD is_banned TINYINT(1) NOT NULL');
+-    }
+-
+-    public function down(Schema $schema): void
+-    {
+-        // this down() migration is auto-generated, please modify it to your needs
+-        $this->addSql('ALTER TABLE user DROP is_banned');
+-    }
+-}
+Index: migrations/Version20240212121854.php
+===================================================================
+diff --git a/migrations/Version20240212121854.php b/migrations/Version20240212121854.php
+deleted file mode 100644
+--- a/migrations/Version20240212121854.php	(revision 604b6a6ac51465d5194c6d89f1c3d4bbf45275a4)
++++ /dev/null	(revision 604b6a6ac51465d5194c6d89f1c3d4bbf45275a4)
+@@ -1,31 +0,0 @@
+-<?php
+-
+-declare(strict_types=1);
+-
+-namespace DoctrineMigrations;
+-
+-use Doctrine\DBAL\Schema\Schema;
+-use Doctrine\Migrations\AbstractMigration;
+-
+-/**
+- * Auto-generated Migration: Please modify to your needs!
+- */
+-final class Version20240212121854 extends AbstractMigration
+-{
+-    public function getDescription(): string
+-    {
+-        return '';
+-    }
+-
+-    public function up(Schema $schema): void
+-    {
+-        // this up() migration is auto-generated, please modify it to your needs
+-        $this->addSql('ALTER TABLE user CHANGE roles roles JSON DEFAULT NULL');
+-    }
+-
+-    public function down(Schema $schema): void
+-    {
+-        // this down() migration is auto-generated, please modify it to your needs
+-        $this->addSql('ALTER TABLE user CHANGE roles roles JSON NOT NULL');
+-    }
+-}
+Index: migrations/Version20240214143041.php
+===================================================================
+diff --git a/migrations/Version20240214143041.php b/migrations/Version20240214143041.php
+deleted file mode 100644
+--- a/migrations/Version20240214143041.php	(revision 604b6a6ac51465d5194c6d89f1c3d4bbf45275a4)
++++ /dev/null	(revision 604b6a6ac51465d5194c6d89f1c3d4bbf45275a4)
+@@ -1,31 +0,0 @@
+-<?php
+-
+-declare(strict_types=1);
+-
+-namespace DoctrineMigrations;
+-
+-use Doctrine\DBAL\Schema\Schema;
+-use Doctrine\Migrations\AbstractMigration;
+-
+-/**
+- * Auto-generated Migration: Please modify to your needs!
+- */
+-final class Version20240214143041 extends AbstractMigration
+-{
+-    public function getDescription(): string
+-    {
+-        return '';
+-    }
+-
+-    public function up(Schema $schema): void
+-    {
+-        // this up() migration is auto-generated, please modify it to your needs
+-        $this->addSql('ALTER TABLE donation DROP id_charity');
+-    }
+-
+-    public function down(Schema $schema): void
+-    {
+-        // this down() migration is auto-generated, please modify it to your needs
+-        $this->addSql('ALTER TABLE donation ADD id_charity INT NOT NULL');
+-    }
+-}
+Index: migrations/Version20240214133156.php
+===================================================================
+diff --git a/migrations/Version20240214133156.php b/migrations/Version20240214133156.php
+deleted file mode 100644
+--- a/migrations/Version20240214133156.php	(revision 604b6a6ac51465d5194c6d89f1c3d4bbf45275a4)
++++ /dev/null	(revision 604b6a6ac51465d5194c6d89f1c3d4bbf45275a4)
+@@ -1,31 +0,0 @@
+-<?php
+-
+-declare(strict_types=1);
+-
+-namespace DoctrineMigrations;
+-
+-use Doctrine\DBAL\Schema\Schema;
+-use Doctrine\Migrations\AbstractMigration;
+-
+-/**
+- * Auto-generated Migration: Please modify to your needs!
+- */
+-final class Version20240214133156 extends AbstractMigration
+-{
+-    public function getDescription(): string
+-    {
+-        return '';
+-    }
+-
+-    public function up(Schema $schema): void
+-    {
+-        // this up() migration is auto-generated, please modify it to your needs
+-        $this->addSql('ALTER TABLE donation ADD first_name VARCHAR(255) NOT NULL, ADD last_name VARCHAR(255) NOT NULL, ADD phone_number INT NOT NULL, CHANGE id_donation id_donation INT NOT NULL, CHANGE id_charity id_charity INT NOT NULL');
+-    }
+-
+-    public function down(Schema $schema): void
+-    {
+-        // this down() migration is auto-generated, please modify it to your needs
+-        $this->addSql('ALTER TABLE donation DROP first_name, DROP last_name, DROP phone_number, CHANGE id_donation id_donation VARCHAR(255) NOT NULL, CHANGE id_charity id_charity VARCHAR(255) NOT NULL');
+-    }
+-}
+Index: migrations/Version20240212121900.php
+===================================================================
+diff --git a/migrations/Version20240212121900.php b/migrations/Version20240212121900.php
+deleted file mode 100644
+--- a/migrations/Version20240212121900.php	(revision 604b6a6ac51465d5194c6d89f1c3d4bbf45275a4)
++++ /dev/null	(revision 604b6a6ac51465d5194c6d89f1c3d4bbf45275a4)
+@@ -1,31 +0,0 @@
+-<?php
+-
+-declare(strict_types=1);
+-
+-namespace DoctrineMigrations;
+-
+-use Doctrine\DBAL\Schema\Schema;
+-use Doctrine\Migrations\AbstractMigration;
+-
+-/**
+- * Auto-generated Migration: Please modify to your needs!
+- */
+-final class Version20240212121900 extends AbstractMigration
+-{
+-    public function getDescription(): string
+-    {
+-        return '';
+-    }
+-
+-    public function up(Schema $schema): void
+-    {
+-        // this up() migration is auto-generated, please modify it to your needs
+-        $this->addSql('ALTER TABLE user CHANGE roles roles JSON DEFAULT NULL');
+-    }
+-
+-    public function down(Schema $schema): void
+-    {
+-        // this down() migration is auto-generated, please modify it to your needs
+-        $this->addSql('ALTER TABLE user CHANGE roles roles JSON NOT NULL');
+-    }
+-}
+Index: migrations/Version20240212122006.php
+===================================================================
+diff --git a/migrations/Version20240212122006.php b/migrations/Version20240212122006.php
+deleted file mode 100644
+--- a/migrations/Version20240212122006.php	(revision 604b6a6ac51465d5194c6d89f1c3d4bbf45275a4)
++++ /dev/null	(revision 604b6a6ac51465d5194c6d89f1c3d4bbf45275a4)
+@@ -1,31 +0,0 @@
+-<?php
+-
+-declare(strict_types=1);
+-
+-namespace DoctrineMigrations;
+-
+-use Doctrine\DBAL\Schema\Schema;
+-use Doctrine\Migrations\AbstractMigration;
+-
+-/**
+- * Auto-generated Migration: Please modify to your needs!
+- */
+-final class Version20240212122006 extends AbstractMigration
+-{
+-    public function getDescription(): string
+-    {
+-        return '';
+-    }
+-
+-    public function up(Schema $schema): void
+-    {
+-        // this up() migration is auto-generated, please modify it to your needs
+-        $this->addSql('ALTER TABLE user CHANGE roles roles JSON NOT NULL');
+-    }
+-
+-    public function down(Schema $schema): void
+-    {
+-        // this down() migration is auto-generated, please modify it to your needs
+-        $this->addSql('ALTER TABLE user CHANGE roles roles JSON DEFAULT NULL');
+-    }
+-}
+Index: migrations/Version20240220190532.php
+===================================================================
+diff --git a/migrations/Version20240220190532.php b/migrations/Version20240220190532.php
+deleted file mode 100644
+--- a/migrations/Version20240220190532.php	(revision 604b6a6ac51465d5194c6d89f1c3d4bbf45275a4)
++++ /dev/null	(revision 604b6a6ac51465d5194c6d89f1c3d4bbf45275a4)
+@@ -1,31 +0,0 @@
+-<?php
+-
+-declare(strict_types=1);
+-
+-namespace DoctrineMigrations;
+-
+-use Doctrine\DBAL\Schema\Schema;
+-use Doctrine\Migrations\AbstractMigration;
+-
+-/**
+- * Auto-generated Migration: Please modify to your needs!
+- */
+-final class Version20240220190532 extends AbstractMigration
+-{
+-    public function getDescription(): string
+-    {
+-        return '';
+-    }
+-
+-    public function up(Schema $schema): void
+-    {
+-        // this up() migration is auto-generated, please modify it to your needs
+-        $this->addSql('ALTER TABLE charity CHANGE charity_pic charity_pic VARCHAR(255) NOT NULL');
+-    }
+-
+-    public function down(Schema $schema): void
+-    {
+-        // this down() migration is auto-generated, please modify it to your needs
+-        $this->addSql('ALTER TABLE charity CHANGE charity_pic charity_pic VARCHAR(255) DEFAULT NULL');
+-    }
+-}
+Index: migrations/Version20240224132129.php
+===================================================================
+diff --git a/migrations/Version20240224132129.php b/migrations/Version20240224132129.php
+deleted file mode 100644
+--- a/migrations/Version20240224132129.php	(revision 604b6a6ac51465d5194c6d89f1c3d4bbf45275a4)
++++ /dev/null	(revision 604b6a6ac51465d5194c6d89f1c3d4bbf45275a4)
+@@ -1,31 +0,0 @@
+-<?php
+-
+-declare(strict_types=1);
+-
+-namespace DoctrineMigrations;
+-
+-use Doctrine\DBAL\Schema\Schema;
+-use Doctrine\Migrations\AbstractMigration;
+-
+-/**
+- * Auto-generated Migration: Please modify to your needs!
+- */
+-final class Version20240224132129 extends AbstractMigration
+-{
+-    public function getDescription(): string
+-    {
+-        return '';
+-    }
+-
+-    public function up(Schema $schema): void
+-    {
+-        // this up() migration is auto-generated, please modify it to your needs
+-        $this->addSql('ALTER TABLE user DROP image');
+-    }
+-
+-    public function down(Schema $schema): void
+-    {
+-        // this down() migration is auto-generated, please modify it to your needs
+-        $this->addSql('ALTER TABLE user ADD image LONGBLOB DEFAULT NULL');
+-    }
+-}
+Index: migrations/Version20240302105024.php
+===================================================================
+diff --git a/migrations/Version20240302105024.php b/migrations/Version20240302105024.php
+deleted file mode 100644
+--- a/migrations/Version20240302105024.php	(revision 604b6a6ac51465d5194c6d89f1c3d4bbf45275a4)
++++ /dev/null	(revision 604b6a6ac51465d5194c6d89f1c3d4bbf45275a4)
+@@ -1,31 +0,0 @@
+-<?php
+-
+-declare(strict_types=1);
+-
+-namespace DoctrineMigrations;
+-
+-use Doctrine\DBAL\Schema\Schema;
+-use Doctrine\Migrations\AbstractMigration;
+-
+-/**
+- * Auto-generated Migration: Please modify to your needs!
+- */
+-final class Version20240302105024 extends AbstractMigration
+-{
+-    public function getDescription(): string
+-    {
+-        return '';
+-    }
+-
+-    public function up(Schema $schema): void
+-    {
+-        // this up() migration is auto-generated, please modify it to your needs
+-        $this->addSql('ALTER TABLE user ADD is_active TINYINT(1) NOT NULL');
+-    }
+-
+-    public function down(Schema $schema): void
+-    {
+-        // this down() migration is auto-generated, please modify it to your needs
+-        $this->addSql('ALTER TABLE user DROP is_active');
+-    }
+-}

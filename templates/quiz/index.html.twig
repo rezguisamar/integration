@@ -1,0 +1,73 @@
+{% extends 'baseBack.html.twig' %}
+
+{% block title %}Quiz index{% endblock %}
+
+
+
+{% block body %}
+    <h1>Quiz index</h1>
+<style>
+        /* Custom styles */
+        .quiz-container {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+        .quiz-card {
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            transition: box-shadow 0.3s ease;
+            max-width: 500px;
+            margin-left:250px;
+        }
+        .quiz-card:hover {
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+        }
+        .quiz-card h2 {
+            margin-top: 0;
+            font-size: 24px;
+            color: #333;
+        }
+        .quiz-card p {
+            margin-bottom: 10px;
+            color: #777;
+        }
+        .quiz-card .actions a {
+            margin-right: 10px;
+            text-decoration: none;
+            color: #007bff;
+            transition: color 0.3s ease;
+        }
+        .quiz-card .actions a:hover {
+            color: #0056b3;
+        }
+    </style>
+    <center>
+    <div class="quiz-container">
+        {% for quiz in quizzes %}
+            <div class="quiz-card">
+                <h2>{{ quiz.titre }}</h2>
+                <p><strong>Created At:</strong> {{ quiz.createdAt ? quiz.createdAt|date('Y-m-d H:i:s') : '' }}</p>
+                <p><strong>Durée:</strong> {{ quiz.duree }}</p>
+                <p><strong>N° Questions:</strong> {{ quiz.nbrq }}</p>
+                <p><strong>N° Questions Added:</strong> {{ quiz.Questions|length }}</p>
+                <p><strong>Note:</strong> {{ quiz.note }}</p>
+                <div class="actions">
+                {% if quiz.Questions|length < quiz.nbrq %}
+                    <a href="{{ path('app_question_new', {'id': quiz.id}) }}">Add Questions</a>
+                    {% endif %}
+                    {% if quiz.Questions|length > 0 %}
+                    <a href="{{ path('app_question_index', {'id': quiz.id}) }}">View Questions</a>
+                    {% endif %}
+                    <a href="{{ path('app_quiz_edit', {'id': quiz.id}) }}">Edit</a>
+                </div>
+                {{ include('quiz/_delete_form.html.twig') }}
+            </div>
+        {% else %}
+            <p>No records found</p>
+        {% endfor %}
+    </div>
+    </center>
+{% endblock %}

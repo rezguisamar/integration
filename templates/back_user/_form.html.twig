@@ -1,0 +1,117 @@
+{% block title %}
+    <!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+
+    <title>Pages / Login - Greenta</title>
+    <meta content="" name="description">
+    <meta content="" name="keywords">
+
+    <!-- Favicons -->
+    <link href="{{ asset('assets/img/logo.png') }}" rel="icon">
+    <link href="{{ asset('assets/img/logo.png') }}" rel="apple-touch-icon">
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.gstatic.com" rel="preconnect">
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Nunito:300,300i,400,400i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i" rel="stylesheet">
+
+    <!-- Vendor CSS Files -->
+    <link href="{{ asset('backOfficeAssets/vendor/bootstrap/css/bootstrap.min.css') }}" rel="stylesheet">
+    <link href="{{ asset('backOfficeAssets/vendor/bootstrap-icons/bootstrap-icons.css') }}" rel="stylesheet">
+    <link href="{{ asset('backOfficeAssets/vendor/boxicons/css/boxicons.min.css') }}" rel="stylesheet">
+    <link href="{{ asset('backOfficeAssets/vendor/quill/quill.snow.css') }}" rel="stylesheet">
+    <link href="{{ asset('backOfficeAssets/vendor/quill/quill.bubble.css') }}" rel="stylesheet">
+    <link href="{{ asset('backOfficeAssets/vendor/remixicon/remixicon.css') }}" rel="stylesheet">
+    <link href="{{ asset('backOfficeAssets/vendor/simple-datatables/style.css') }}" rel="stylesheet">
+
+    <!-- Template Main CSS File -->
+    <link href="{{ asset('backOfficeAssets/css/style.css') }}" rel="stylesheet">
+</head>
+{% endblock %}
+{% block body %}
+{{ form_start(form) }}
+<main>
+    <div class="container">
+
+        <section class="section register min-vh-100 d-flex flex-column align-items-center justify-content-center py-4">
+            <div class="container">
+                <div class="row justify-content-center">
+                    <div class="col-lg-4 col-md-6 d-flex flex-column align-items-center justify-content-center">
+
+                        <div class="d-flex justify-content-center py-4">
+                            <a href="index.html" class="logo d-flex align-items-center w-auto">
+                                <img src="{{ asset('assets/img/logo.png') }}" alt="{{ 'Greenta'|trans }}" />
+                                <span class="d-none d-lg-block">{{ 'Greenta'|trans }}</span>
+                            </a>
+                        </div><!-- End Logo -->
+
+                        <div class="card mb-3">
+
+                            <div class="card-body">
+
+                                <div class="pt-4 pb-2">
+                                    <h5 class="card-title text-center pb-0 fs-4">Create an Account</h5>
+                                </div>
+                                {{ form_widget(form._token) }}
+                                <form class="row g-3 needs-validation" novalidate>
+
+                                    <div class="col-sm-12">
+                                        {{ form_label(form.firstname)}}
+                                        {{ form_widget(form.firstname,{'attr':{'class':'form-control bg-light border-0'}}) }}
+                                        {{ form_errors(form.firstname)}}
+                                    </div>
+                                    <div class="col-sm-12">
+                                        {{ form_label(form.lastname)}}
+                                        {{ form_widget(form.lastname,{'attr':{'class':'form-control bg-light border-0'}}) }}
+                                        {{ form_errors(form.lastname)}}
+                                    </div>
+                                    <div class="col-sm-12">
+                                        {{ form_label(form.email)}}
+                                        {{ form_widget(form.email,{'attr':{'type':'text','class':'form-control bg-light border-0'}}) }}
+                                        {{ form_errors(form.email)}}
+                                    </div>
+                                    <div class="col-sm-12">
+                                        {{ form_label(form.password)}}
+                                        {{ form_widget(form.password,{'attr':{'class':'form-control bg-light border-0'}})  }}
+                                        {{ form_errors(form.password)}}
+                                    </div>
+                                    <div class="col-sm-12">
+                                        {{ form_label(form.phone)}}
+                                        {{ form_widget(form.phone,{'attr':{'class':'form-control bg-light border-0'}}) }}
+                                        {{ form_errors(form.phone)}}
+                                    </div>
+                                    <div class="col-sm-12">
+                                        {{ form_row(form.agreeTerms,{'attr': {'class': 'form-check-input'}}) }}
+                                    </div>
+                                    <button class="btn btn-primary py-3 px-4" >{{ button_label|default('Save') }}</button>
+                                </form>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </div>
+</main><!-- End #main -->
+
+{# Assuming you are in a Twig template file, for example, templates/backOffice/base.html.twig #}
+
+<!-- Vendor JS Files -->
+<script src="{{ asset('backOfficeAssets/vendor/apexcharts/apexcharts.min.js') }}"></script>
+<script src="{{ asset('backOfficeAssets/vendor/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
+<script src="{{ asset('backOfficeAssets/vendor/chart.js/chart.umd.js') }}"></script>
+<script src="{{ asset('backOfficeAssets/vendor/echarts/echarts.min.js') }}"></script>
+<script src="{{ asset('backOfficeAssets/vendor/quill/quill.min.js') }}"></script>
+<script src="{{ asset('backOfficeAssets/vendor/simple-datatables/simple-datatables.js') }}"></script>
+<script src="{{ asset('backOfficeAssets/vendor/tinymce/tinymce.min.js') }}"></script>
+<script src="{{ asset('backOfficeAssets/vendor/php-email-form/validate.js') }}"></script>
+
+<!-- Template Main JS File -->
+<script src="{{ asset('backOfficeAssets/js/main.js') }}"></script>
+{{ form_end(form) }}
+{% endblock %}

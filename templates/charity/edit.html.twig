@@ -1,0 +1,15 @@
+{% extends 'baseBack.html.twig' %}
+
+{% block title %}Edit Charity
+{% endblock %}
+
+{% block body %}
+	<h1>Edit Charity</h1>
+
+
+	{{ include('charity/_form.html.twig', {'button_label': 'update'}) }}
+
+
+	<a href="{{ path('app_charity_index') }}">back to list</a>
+
+{% endblock %}

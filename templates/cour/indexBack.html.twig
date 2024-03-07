@@ -1,0 +1,173 @@
+{% extends 'baseBack.html.twig' %}
+{% block title %}Cour index{% endblock %}
+
+
+    
+
+{% block search %}
+    <div class="search-bar">
+        <form class="search-form d-flex align-items-center" method="POST" action="{{path('app_cour_search')}}">
+            <input type="text" name="query" placeholder="Search" title="Enter search keyword">
+            <button type="submit" title="Search"><i class="bi bi-search"></i></button>
+        </form>
+    </div><!-- End Search Bar -->
+{% endblock %}
+{% block body %}
+<style>
+        /* Custom styles */
+        .table {
+            width: 70%;
+            border-collapse: collapse;
+             margin-top: 30px;
+            margin-bottom: 20px;
+            margin-left:350px;
+        }
+        .table th, .table td {
+            padding: 8px;
+            border: 1px solid #ddd;
+            text-align: left;
+        }
+        .table th {
+            background-color: #f2f2f2;
+        }
+        .table tbody tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+        .table tbody tr:hover {
+            background-color: #ddd;
+        }
+        .actions a {
+            margin-right: 5px;
+            text-decoration: none;
+            color: #007bff;
+            transition: color 0.3s ease;
+        }
+        .actions a:hover {
+            color: #0056b3;
+        }
+        .no-records {
+            text-align: center;
+            color: #777;
+        }
+        .button {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            text-decoration: none;
+            transition: background-color 0.3s ease;
+        }
+        .button:hover {
+            background-color: #0056b3;
+        }
+        
+        .filter-container {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+        }
+
+        .filter-container form {
+            margin: 0 10px;
+        }
+
+        select, input[type="submit"] {
+            padding: 10px;
+            font-size: 16px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            background-color: #fff;
+            transition: border-color 0.3s ease;
+        }
+
+        select:focus, input[type="submit"]:focus {
+            outline: none;
+            border-color: #66afe9;
+        }
+
+        input[type="submit"] {
+            background-color: #007bff;
+            color: #fff;
+            cursor: pointer;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        input[type="submit"]:hover {
+            background-color: #0056b3;
+        }
+    </style>
+    <center>
+    <h1 style="margin-top: 150px;">Courses</h1>
+    
+</center>
+<div class="filter-container">
+        <div>
+            <h3>Filtre Niveau</h3>
+            <form action="{{ path('app_cour_filtre') }}" method="POST">
+                <select id="filtre" name="filtre">
+                    <option value="Beginner">Beginner</option>
+                    <option value="Intermediate">Intermediate</option>
+                    <option value="Difficult">Difficult</option>
+                </select>
+                <input type="submit" value="Filtre" />
+            </form>
+        </div>
+        <div>
+            <h3>Filtre Category</h3>
+            <form action="{{ path('app_cour_filtre_categ') }}" method="POST">
+                <select id="filtre_categ" name="filtre_categ">
+                    <option value="Biodiversity">Biodiversity</option>
+                    <option value="Sensitization">Sensitization</option>
+                    <option value="Nature">Nature</option>
+                </select>
+                <input type="submit" value="Filtre" />
+            </form>
+        </div>
+    </div>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Titre</th>
+                <th>Description</th>
+                <th>Niveau</th>
+                <th>CreatedAt</th>
+                <th>Categorie</th>
+                <th>Actions</th>
+                <th>Quiz</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for cour in cours %}
+            <tr>
+                <td>{{ cour.id }}</td>
+                <td>{{ cour.titre }}</td>
+                <td>{{ cour.description }}</td>
+                <td>{{ cour.niveau }}</td>
+                <td>{{ cour.createdAt ? cour.createdAt|date('Y-m-d H:i:s') : '' }}</td>
+                <td>{{ cour.categorie }}</td>
+                <td class="actions">
+                    <a href="{{ path('app_cour_show', {'id': cour.id}) }}">show</a>
+                    <a href="{{ path('app_cour_edit', {'id': cour.id}) }}">edit</a>
+                    <td>
+                    {% if cour.quizzes|length != 0 %}
+                    <a href="{{ path('app_quiz_index', {'id': cour.id}) }}">View Quizes</a>
+                    {% endif %}
+                    <a href="{{ path('app_quiz_new', {'id': cour.id}) }}">Add Quiz</a>
+                    </td>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="7" class="no-records">No records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+<center>
+    <a href="{{ path('app_cour_new') }}" class="button">Create new</a>
+    </center>
+{% endblock %}

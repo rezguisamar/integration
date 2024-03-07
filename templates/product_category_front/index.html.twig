@@ -1,0 +1,41 @@
+{% extends 'home.html.twig' %}
+
+{% block title %}Product Category List{% endblock %}
+
+{% block body %}
+    <h1>Product Category List</h1>
+
+ {% for product_category in product_categories %}
+        <div class="card">
+        <img src="Espritlogo.jpg" alt="Avatar" style="width:100%">
+        <div class="container">
+            <h4><b>{{ product_category.categoryname }}</b></h4>
+            <a href="{{ path('app_product_category_back_show', {'id': product_category.id}) }}">show</a>
+        </div>
+        </div>
+
+        {% else %}
+            <tr>
+                <td colspan="4">no records found</td>
+            </tr>
+        {% endfor %}
+
+        <style>
+        .card {
+  /* Add shadows to create the "card" effect */
+  box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+  transition: 0.3s;
+}
+
+/* On mouse-over, add a deeper shadow */
+.card:hover {
+  box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
+}
+
+/* Add some padding inside the card container */
+.container {
+  padding: 2px 16px;
+}
+        </style>
+
+{% endblock %}

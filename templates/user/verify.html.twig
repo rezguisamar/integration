@@ -1,0 +1,12 @@
+<!DOCTYPE html>
+<html>
+// ... lines 3 - 14
+<body>
+// ... lines 16 - 81
+{% for flash in app.flashes('success') %}
+    <div class="alert alert-success">{{ flash }}</div>
+{% endfor %}
+{% block body %}{% endblock %}
+// ... lines 87 - 89
+</body>
+</html>

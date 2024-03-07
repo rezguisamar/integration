@@ -1,0 +1,28 @@
+{% extends 'baseFront.html.twig' %}
+{% block body %}
+	<!-- About Start -->
+	<div class="container-xxl py-5">
+		<div class="container">
+			<div class="row g-5 align-items-end">
+				<div class="col-lg-3 col-md-5 wow fadeInUp" data-wow-delay="0.1s">
+
+
+					<img class="img-fluid rounded" data-wow-delay="0.1s" src="{{ asset('uploads/' ~ charity.picture) }}">
+				</div>
+
+
+				<div class="col-lg-6 col-md-7 wow fadeInUp" data-wow-delay="0.3s">
+					<h1 class="display-1 text-primary mb-0">{{ charity.amountDonated }}</h1>
+					<p class="text-primary mb-4">Dinars Tunisien</p>
+					<h1 class="display-5 mb-4">{{ charity.nameOfCharity }}</h1>
+
+					<a class="btn btn-primary py-3 px-4" href="{{ path('app_donation_new')}}">Donate</a>
+				</div>
+
+
+			</div>
+		</div>
+	</div>
+	<!-- About End -->
+
+{% endblock %}
